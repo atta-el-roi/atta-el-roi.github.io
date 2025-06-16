@@ -39,6 +39,15 @@
 
     let tirages = [];
 
+    fetch('versets.txt')
+    .then(response => response.text())
+    .then(text => {
+        versets = text.split('\n');
+    })
+    .catch(err => {
+        console.error("Erreur de chargement du fichier versets.txt", err);
+    });
+
     function lancerTirage() {
       const nom = document.getElementById("userName").value.trim();
       if (!nom) {
@@ -71,7 +80,8 @@
         lettreNum: lettreIndex + 1,
         lettreNom,
         passage,
-        verset: verset + 1 // pour commencer à 1
+        verset: verset + 1, // pour commencer à 1
+        texteVerset: versets[nombre] || "(verset non trouvé)"
       };
 
       tirages.push(resultat);
@@ -94,6 +104,7 @@
             <h5>Tirage ${index + 1}</h5>
             <p>${t.lettreNom} ${t.verset}</p>
             <p>Psaumes 119.${t.passage}</p>
+            <p><strong>Texte du verset :</strong> ${t.texteVerset}</p>
           </div>
         `;
         container.innerHTML += html;
